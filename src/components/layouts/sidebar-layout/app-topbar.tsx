@@ -29,7 +29,7 @@ export function AppTopbar() {
   };
 
   return (
-    <div className="flex h-14 items-center justify-between border-b bg-background px-4">
+    <div className="flex h-14 items-center justify-between border-b bg-background px-6 w-full">
       {/* Left side - Title and status */}
       <div className="flex items-center gap-4">
         <div className="flex flex-col">
