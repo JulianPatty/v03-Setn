@@ -89,8 +89,8 @@ export type AppActions = {
 export type AppStore = AppState & AppActions;
 
 export const defaultState: AppState = {
-  nodes: initialNodes.map((node) => ({ ...node, style: { opacity: 0 } })),
-  edges: initialEdges.map((edge) => ({ ...edge, style: { opacity: 0 } })),
+  nodes: initialNodes.map((node) => ({ ...node, style: { opacity: 1 } })),
+  edges: initialEdges.map((edge) => ({ ...edge, style: { opacity: 1 } })),
   colorMode: 'light',
   layout: 'free',
   draggedNodes: new Map(),

@@ -5,6 +5,7 @@ import {
   Merge,
   CheckCheck,
   Ban,
+  Bot,
   // Import other icons as needed
 } from 'lucide-react';
 
@@ -18,5 +19,6 @@ export const iconMapping: Record<
   Merge: Merge,
   CheckCheck: CheckCheck,
   Ban: Ban,
+  Bot: Bot,
   // Add other mappings here
 };

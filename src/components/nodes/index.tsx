@@ -8,6 +8,7 @@ import { InitialNode } from './initial-node';
 import { TransformNode } from './transform-node';
 import { BranchNode } from './branch-node';
 import { JoinNode } from './join-node';
+import { AgentNode } from './agent-node';
 
 /* WORKFLOW NODE DATA PROPS ------------------------------------------------------ */
 
@@ -47,6 +48,26 @@ const nodesConfig: Record<AppNodeType, NodeConfig> = {
       },
     ],
     icon: 'Rocket',
+  },
+  'agent-node': {
+    id: 'agent-node',
+    title: 'Agent Node',
+    status: 'initial',
+    handles: [
+      {
+        type: 'source',
+        position: Position.Bottom,
+        x: NODE_SIZE.width * 0.5,
+        y: NODE_SIZE.height,
+      },
+      {
+        type: 'target',
+        position: Position.Top,
+        x: NODE_SIZE.width * 0.5,
+        y: 0,
+      },
+    ],
+    icon: 'Bot',
   },
   'transform-node': {
     id: 'transform-node',
@@ -140,6 +161,7 @@ const nodesConfig: Record<AppNodeType, NodeConfig> = {
 
 export const nodeTypes = {
   'initial-node': InitialNode,
+  'agent-node': AgentNode,
   'output-node': OutputNode,
   'transform-node': TransformNode,
   'branch-node': BranchNode,
@@ -178,6 +200,7 @@ export function createNodeByType({
 
 export type AppNode =
   | Node<WorkflowNodeData, 'initial-node'>
+  | Node<WorkflowNodeData, 'agent-node'>
   | Node<WorkflowNodeData, 'transform-node'>
   | Node<WorkflowNodeData, 'join-node'>
   | Node<WorkflowNodeData, 'branch-node'>

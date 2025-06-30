@@ -26,6 +26,7 @@ const compatibleNodeTypes = (type: 'source' | 'target') => {
   if (type === 'source') {
     return (node: NodeConfig) => {
       return (
+        node.id === 'agent-node' ||
         node.id === 'transform-node' ||
         node.id === 'join-node' ||
         node.id === 'branch-node' ||
@@ -35,6 +36,7 @@ const compatibleNodeTypes = (type: 'source' | 'target') => {
   }
   return (node: NodeConfig) => {
     return (
+      node.id === 'agent-node' ||
       node.id === 'transform-node' ||
       node.id === 'join-node' ||
       node.id === 'branch-node' ||
