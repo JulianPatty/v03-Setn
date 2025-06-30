@@ -1,5 +1,5 @@
 import { AppSidebar } from '@/components/layouts/sidebar-layout/app-sidebar';
-import { AppNavbar } from '@/components/layouts/sidebar-layout/app-navbar';
+import { AppTopbar } from '@/components/layouts/sidebar-layout/app-topbar';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 
 export default function SidebarLayout({
@@ -12,9 +12,11 @@ export default function SidebarLayout({
     <SidebarProvider>
       <AppSidebar />
       <main className="flex h-screen w-full flex-col overflow-hidden">
-        <SidebarTrigger className="absolute z-10" />
-        {children}
-        <AppNavbar />
+        <AppTopbar />
+        <div className="relative flex-1">
+          <SidebarTrigger className="absolute z-10 top-4 left-4" />
+          {children}
+        </div>
       </main>
     </SidebarProvider>
   );
