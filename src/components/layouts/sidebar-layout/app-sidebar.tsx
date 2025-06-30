@@ -15,6 +15,7 @@ import {
   SidebarGroup,
   SidebarGroupContent,
 } from '@/components/ui/sidebar';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { SettingsDialog } from '@/components/settings-dialog';
 import nodesConfig, {
   AppNode,
@@ -37,11 +38,32 @@ export function AppSidebar(props: ComponentProps<typeof Sidebar>) {
           </div>
           <span className="truncate font-semibold">Workflow Editor</span>
         </div>
-        <SidebarMenu>
-          {Object.values(nodesConfig).map((item) => (
-            <DraggableItem key={item.title} {...item} />
-          ))}
-        </SidebarMenu>
+        
+        {/* Tabbed Interface */}
+        <Tabs defaultValue="blocks" className="w-full px-2">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="blocks">Blocks</TabsTrigger>
+            <TabsTrigger value="apps">Apps</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="blocks" className="mt-4">
+            <SidebarMenu>
+              {Object.values(nodesConfig).map((item) => (
+                <DraggableItem key={item.title} {...item} />
+              ))}
+            </SidebarMenu>
+          </TabsContent>
+          
+          <TabsContent value="apps" className="mt-4">
+            <SidebarMenu>
+              {/* Placeholder for Apps - you can add app-specific items here */}
+              <SidebarMenuItem className="relative border-2 border-dashed border-gray-200 rounded-md p-4 text-center text-muted-foreground">
+                <div className="text-sm">Apps coming soon...</div>
+                <div className="text-xs mt-1">Connect external services and integrations</div>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </TabsContent>
+        </Tabs>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup className="mt-auto">
