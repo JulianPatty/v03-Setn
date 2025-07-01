@@ -229,7 +229,7 @@ function Sidebar({
       <div
         data-slot="sidebar-container"
         className={cn(
-          "fixed z-10 hidden w-(--sidebar-width) transition-[left,right,width] duration-200 ease-linear md:flex",
+          "fixed z-50 hidden w-(--sidebar-width) transition-[left,right,width] duration-200 ease-linear md:flex",
           // Full height from top to bottom
           "top-0 bottom-0 h-screen",
           side === "left"

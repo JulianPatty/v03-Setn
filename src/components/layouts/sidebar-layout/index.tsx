@@ -9,7 +9,7 @@ export default function SidebarLayout({
   title?: string;
 }) {
   return (
-    <SidebarProvider>
+    <SidebarProvider defaultOpen={false}>
       <div className="flex h-screen w-full">
         <AppSidebar />
         <div className="flex flex-1 flex-col overflow-hidden">
