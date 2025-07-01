@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback, ComponentProps, useRef } from 'react';
-import { Command, GripVertical, Plus } from 'lucide-react';
+import { Search, Database, Webhook, Code, Route, RotateCcw, Settings } from 'lucide-react';
 import { useReactFlow } from '@xyflow/react';
 
 import {
@@ -10,48 +10,155 @@ import {
   SidebarHeader,
   SidebarRail,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
   SidebarGroup,
   SidebarGroupContent,
 } from '@/components/ui/sidebar';
-import { SettingsDialog } from '@/components/settings-dialog';
-import nodesConfig, { NodeConfig } from '@/components/nodes/config';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { useAppStore } from '@/store';
+import { useShallow } from 'zustand/react/shallow';
+import { type AppStore } from '@/store/app-store';
 import {
   AppNode,
   createNodeByType,
 } from '@/components/nodes';
-import { cn } from '@/lib/utils';
-import { iconMapping } from '@/data/icon-mapping';
-import { useAppStore } from '@/store';
-import { useShallow } from 'zustand/react/shallow';
-import { type AppStore } from '@/store/app-store';
+
+// Define the blocks that should appear in the sidebar
+const blockCategories = [
+  {
+    title: 'Blocks',
+    active: true,
+    blocks: [
+      {
+        id: 'agent-node',
+        title: 'Agent',
+        description: 'Build an agent',
+        icon: '🤖',
+        bgColor: 'bg-purple-100',
+        iconBg: 'bg-purple-600'
+      },
+      {
+        id: 'transform-node',
+        title: 'API',
+        description: 'Use any API',
+        icon: '🌐',
+        bgColor: 'bg-blue-100',
+        iconBg: 'bg-blue-600'
+      },
+      {
+        id: 'join-node',
+        title: 'Database',
+        description: 'Database operations',
+        icon: '🗄️',
+        bgColor: 'bg-blue-100',
+        iconBg: 'bg-blue-600'
+      },
+      {
+        id: 'branch-node',
+        title: 'Webhook',
+        description: 'Receive webhooks',
+        icon: '🔗',
+        bgColor: 'bg-blue-100',
+        iconBg: 'bg-blue-600'
+      },
+      {
+        id: 'transform-node',
+        title: 'Condition',
+        description: 'Add a condition',
+        icon: '🔀',
+        bgColor: 'bg-orange-100',
+        iconBg: 'bg-orange-600'
+      },
+      {
+        id: 'transform-node',
+        title: 'Function',
+        description: 'Run custom logic',
+        icon: '⚡',
+        bgColor: 'bg-red-100',
+        iconBg: 'bg-red-600'
+      },
+      {
+        id: 'transform-node',
+        title: 'Router',
+        description: 'Route workflow',
+        icon: '🔄',
+        bgColor: 'bg-green-100',
+        iconBg: 'bg-green-600'
+      },
+      {
+        id: 'transform-node',
+        title: 'Loop',
+        description: 'Iterate over items',
+        icon: '🔁',
+        bgColor: 'bg-purple-100',
+        iconBg: 'bg-purple-600'
+      }
+    ]
+  },
+  {
+    title: 'Tools',
+    active: false,
+    blocks: []
+  }
+];
 
 export function AppSidebar(props: ComponentProps<typeof Sidebar>) {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [activeTab, setActiveTab] = useState('Blocks');
+
   return (
-    <Sidebar className="border-r-0" {...props}>
-      <SidebarHeader className="py-0">
-        <div className="flex gap-2 px-1 h-14 items-center ">
-          <div className="flex aspect-square size-5 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground">
-            <Command className="size-3" />
-          </div>
-          <span className="truncate font-semibold">Workflow Editor</span>
-        </div>
-        <SidebarMenu>
-          {Object.values(nodesConfig).map((item) => (
-            <DraggableItem key={item.title} {...item} />
+    <Sidebar className="border-r-0 w-80" {...props}>
+      <SidebarHeader className="p-4 border-b">
+        {/* Tab Navigation */}
+        <div className="flex gap-1 mb-4">
+          {blockCategories.map((category) => (
+            <Button
+              key={category.title}
+              variant={activeTab === category.title ? "default" : "ghost"}
+              size="sm"
+              onClick={() => setActiveTab(category.title)}
+              className={cn(
+                "flex-1",
+                activeTab === category.title 
+                  ? "bg-gray-100 text-gray-900" 
+                  : "text-gray-600 hover:text-gray-900"
+              )}
+            >
+              {category.title === 'Blocks' && <Database className="w-4 h-4 mr-2" />}
+              {category.title === 'Tools' && <Settings className="w-4 h-4 mr-2" />}
+              {category.title}
+            </Button>
           ))}
-        </SidebarMenu>
+        </div>
+
+        {/* Search */}
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+          <Input
+            placeholder="Search blocks..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-10 bg-gray-50 border-gray-200"
+          />
+        </div>
       </SidebarHeader>
-      <SidebarContent>
-        <SidebarGroup className="mt-auto">
+
+      <SidebarContent className="p-4">
+        <SidebarGroup>
           <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <SettingsDialog />
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+            <SidebarMenu className="space-y-2">
+              {blockCategories
+                .find(cat => cat.title === activeTab)
+                ?.blocks
+                .filter(block => 
+                  block.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                  block.description.toLowerCase().includes(searchQuery.toLowerCase())
+                )
+                .map((block) => (
+                  <DraggableBlockItem key={`${block.id}-${block.title}`} {...block} />
+                ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -67,7 +174,21 @@ const selector = (state: AppStore) => ({
   resetPotentialConnection: state.resetPotentialConnection,
 });
 
-function DraggableItem(props: NodeConfig) {
+function DraggableBlockItem({ 
+  id, 
+  title, 
+  description, 
+  icon, 
+  bgColor, 
+  iconBg 
+}: {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  bgColor: string;
+  iconBg: string;
+}) {
   const { screenToFlowPosition } = useReactFlow();
   const { addNode, checkForPotentialConnection, resetPotentialConnection } =
     useAppStore(useShallow(selector));
@@ -75,7 +196,7 @@ function DraggableItem(props: NodeConfig) {
 
   const onClick = useCallback(() => {
     const newNode: AppNode = createNodeByType({
-      type: props.id,
+      type: id as any,
       position: screenToFlowPosition({
         x: window.innerWidth / 2,
         y: window.innerHeight / 2,
@@ -83,45 +204,29 @@ function DraggableItem(props: NodeConfig) {
     });
 
     addNode(newNode);
-  }, [props, addNode, screenToFlowPosition]);
+  }, [id, addNode, screenToFlowPosition]);
 
   const onDragStart = useCallback(
     (e: React.DragEvent) => {
-      e.dataTransfer.setData('application/reactflow', JSON.stringify(props));
+      e.dataTransfer.setData('application/reactflow', JSON.stringify({ id }));
       setIsDragging(true);
     },
-    [props]
+    [id]
   );
 
   const lastDragPos = useRef({ x: 0, y: 0 });
   const onDrag = useCallback(
     (e: React.DragEvent) => {
       const lastPos = lastDragPos.current;
-      // we need to keep track of the last drag position to avoid unnecessary calculations
-      // the drag api constantly fires events even if the mouse is not moving
       if (lastPos.x === e.clientX && lastPos.y === e.clientY) {
         return;
       }
       lastDragPos.current = { x: e.clientX, y: e.clientY };
 
       const flowPosition = screenToFlowPosition({ x: e.clientX, y: e.clientY });
-
-      const handles = nodesConfig[props.id].handles.map(
-        (handle) => handle.type
-      );
-      const handleType = handles.reduce((acc, type) => {
-        if (acc === 'none') return type;
-        if (acc !== 'both' && acc !== type) return 'both';
-        return acc;
-      }, 'none' as 'both' | 'none' | 'source' | 'target');
-
-      if (handleType === 'none') return;
-
-      checkForPotentialConnection(flowPosition, {
-        type: handleType === 'both' ? undefined : handleType,
-      });
+      checkForPotentialConnection(flowPosition, {});
     },
-    [screenToFlowPosition, checkForPotentialConnection, props.id]
+    [screenToFlowPosition, checkForPotentialConnection]
   );
 
   const onDragEnd = useCallback(() => {
@@ -129,34 +234,28 @@ function DraggableItem(props: NodeConfig) {
     resetPotentialConnection();
   }, [resetPotentialConnection]);
 
-  const IconComponent = props?.icon ? iconMapping[props.icon] : undefined;
-
   return (
     <SidebarMenuItem
       className={cn(
-        'relative border-2 active:scale-[.99] rounded-md',
-        isDragging ? 'border-green-500' : 'border-gray-100'
+        'relative rounded-lg border-2 transition-all cursor-grab active:cursor-grabbing',
+        isDragging ? 'border-purple-500 shadow-lg' : 'border-transparent hover:border-gray-200',
+        bgColor
       )}
       onDragStart={onDragStart}
       onDrag={onDrag}
       onDragEnd={onDragEnd}
       onClick={onClick}
       draggable
-      key={props.title}
     >
-      {isDragging && (
-        <span
-          role="presentation"
-          className="absolute -top-3 -right-3 rounded-md border-2 border-green-500 bg-card"
-        >
-          <Plus className="size-4" />
-        </span>
-      )}
-      <SidebarMenuButton className="bg-card cursor-grab active:cursor-grabbing">
-        {IconComponent ? <IconComponent aria-label={props?.icon} /> : null}
-        <span>{props.title}</span>
-        <GripVertical className="ml-auto" />
-      </SidebarMenuButton>
+      <div className="flex items-center gap-3 p-3">
+        <div className={cn("w-8 h-8 rounded-md flex items-center justify-center text-white text-sm", iconBg)}>
+          {icon}
+        </div>
+        <div className="flex-1 min-w-0">
+          <h3 className="font-medium text-gray-900 text-sm">{title}</h3>
+          <p className="text-xs text-gray-600 truncate">{description}</p>
+        </div>
+      </div>
     </SidebarMenuItem>
   );
 }
