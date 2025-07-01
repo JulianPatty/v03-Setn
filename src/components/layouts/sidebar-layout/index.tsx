@@ -1,6 +1,6 @@
 import { AppSidebar } from '@/components/layouts/sidebar-layout/app-sidebar';
 import { AppTopbar } from '@/components/layouts/sidebar-layout/app-topbar';
-import { SidebarProvider } from '@/components/ui/sidebar';
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 
 export default function SidebarLayout({
   children,
@@ -9,15 +9,16 @@ export default function SidebarLayout({
   title?: string;
 }) {
   return (
-    <SidebarProvider defaultOpen={true}>
-      <div className="flex h-screen w-full bg-gray-50">
+    <SidebarProvider defaultOpen={false}>
+      <div className="flex h-screen w-full">
         <AppSidebar />
         <div className="flex flex-1 flex-col overflow-hidden">
           {/* Top bar */}
           <AppTopbar />
           
           {/* Main content area */}
-          <main className="flex h-full w-full flex-1 overflow-hidden bg-gray-50">
+          <main className="flex h-full w-full flex-1 overflow-hidden relative">
+            <SidebarTrigger className="absolute z-10 top-4 left-4" />
             {children}
           </main>
         </div>
