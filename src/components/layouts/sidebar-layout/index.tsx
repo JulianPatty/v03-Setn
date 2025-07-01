@@ -10,14 +10,14 @@ export default function SidebarLayout({
 }) {
   return (
     <SidebarProvider>
-      <div className="flex h-screen w-full flex-col">
-        {/* Top bar spans full width */}
-        <AppTopbar />
-        
-        {/* Sidebar and main content below top bar */}
-        <div className="flex flex-1 overflow-hidden">
-          <AppSidebar />
-          <main className="flex h-full w-full flex-col overflow-hidden relative">
+      <div className="flex h-screen w-full">
+        <AppSidebar />
+        <div className="flex flex-1 flex-col overflow-hidden">
+          {/* Top bar */}
+          <AppTopbar />
+          
+          {/* Main content area */}
+          <main className="flex h-full w-full flex-1 overflow-hidden relative">
             <SidebarTrigger className="absolute z-10 top-4 left-4" />
             {children}
           </main>
