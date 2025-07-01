@@ -19,7 +19,7 @@ import nodesConfig, {
   createNodeByType,
 } from '@/components/nodes';
 import { AppEdge, createEdge } from '@/components/edges';
-import { initialEdges, initialNodes } from '@/data/workflow-data';
+import { getInitialNodes, initialEdges } from '@/data/workflow-data';
 import { layoutGraph } from './layout';
 
 export type AppState = {
@@ -89,7 +89,7 @@ export type AppActions = {
 export type AppStore = AppState & AppActions;
 
 export const defaultState: AppState = {
-  nodes: initialNodes.map((node) => ({ ...node, style: { opacity: 1 } })),
+  nodes: getInitialNodes().map((node) => ({ ...node, style: { opacity: 1 } })),
   edges: initialEdges.map((edge) => ({ ...edge, style: { opacity: 1 } })),
   colorMode: 'light',
   layout: 'free',
