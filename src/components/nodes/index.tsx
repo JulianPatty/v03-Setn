@@ -19,6 +19,15 @@ export type WorkflowNodeData = {
   status?: 'loading' | 'success' | 'error' | 'initial';
 };
 
+// Define AppNodeType explicitly to avoid circular dependency
+export type AppNodeType = 
+  | 'initial-node'
+  | 'agent-node'
+  | 'transform-node'
+  | 'join-node'
+  | 'branch-node'
+  | 'output-node';
+
 export type WorkflowNodeProps = NodeProps<Node<WorkflowNodeData>> & {
   type: AppNodeType;
   children?: React.ReactNode;
@@ -205,7 +214,5 @@ export type AppNode =
   | Node<WorkflowNodeData, 'join-node'>
   | Node<WorkflowNodeData, 'branch-node'>
   | Node<WorkflowNodeData, 'output-node'>;
-
-export type AppNodeType = NonNullable<AppNode['type']>;
 
 export default nodesConfig;
