@@ -16,10 +16,10 @@ import {
   SidebarGroupContent,
 } from '@/components/ui/sidebar';
 import { SettingsDialog } from '@/components/settings-dialog';
-import nodesConfig, {
+import nodesConfig, { NodeConfig } from '@/components/nodes/config';
+import {
   AppNode,
   createNodeByType,
-  type NodeConfig,
 } from '@/components/nodes';
 import { cn } from '@/lib/utils';
 import { iconMapping } from '@/data/icon-mapping';

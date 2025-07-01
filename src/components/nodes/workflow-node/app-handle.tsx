@@ -14,7 +14,7 @@ import {
 
 import { type AppStore } from '@/store/app-store';
 
-import { type AppNodeType, NodeConfig } from '@/components/nodes';
+import { type AppNodeType, NodeConfig } from '@/components/nodes/config';
 import { Button } from '@/components/ui/button';
 import { ButtonHandle } from '@/components/button-handle';
 import { AppDropdownMenu } from '@/components/app-dropdown-menu';

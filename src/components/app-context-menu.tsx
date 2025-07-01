@@ -8,7 +8,7 @@ import {
   ContextMenuItem,
   ContextMenuTrigger,
 } from '@/components/ui/context-menu';
-import nodesConfig, { AppNodeType } from '@/components/nodes';
+import nodesConfig, { AppNodeType } from '@/components/nodes/config';
 import { iconMapping } from '@/data/icon-mapping';
 import { useClientPosition } from '@/hooks/use-client-position';
 import { useAppStore } from '@/store';

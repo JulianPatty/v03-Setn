@@ -13,9 +13,9 @@ import {
 } from '@xyflow/react';
 
 import { setColorModeCookie } from '@/app/actions/cookies';
-import nodesConfig, {
+import nodesConfig, { AppNodeType } from '@/components/nodes/config';
+import {
   AppNode,
-  AppNodeType,
   createNodeByType,
 } from '@/components/nodes';
 import { AppEdge, createEdge } from '@/components/edges';

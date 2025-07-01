@@ -1,4 +1,5 @@
-import nodesConfig, { WorkflowNodeProps } from '.';
+import nodesConfig from './config';
+import { WorkflowNodeProps } from '.';
 import WorkflowNode from './workflow-node';
 import { AppHandle } from './workflow-node/app-handle';
 

@@ -5,7 +5,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import nodesConfig, { AppNodeType, NodeConfig } from '@/components/nodes';
+import nodesConfig, { AppNodeType, NodeConfig } from '@/components/nodes/config';
 import { iconMapping } from '@/data/icon-mapping';
 
 export function AppDropdownMenu({

@@ -1,7 +1,8 @@
-import { Node, NodeProps, Position, XYPosition } from '@xyflow/react';
+import { Node, NodeProps, XYPosition } from '@xyflow/react';
 import { nanoid } from 'nanoid';
 
 import { iconMapping } from '@/data/icon-mapping';
+import nodesConfig, { AppNodeType, NodeConfig, NODE_SIZE } from './config';
 
 import { OutputNode } from './output-node';
 import { InitialNode } from './initial-node';
@@ -19,153 +20,9 @@ export type WorkflowNodeData = {
   status?: 'loading' | 'success' | 'error' | 'initial';
 };
 
-// Define AppNodeType explicitly to avoid circular dependency
-export type AppNodeType = 
-  | 'initial-node'
-  | 'agent-node'
-  | 'transform-node'
-  | 'join-node'
-  | 'branch-node'
-  | 'output-node';
-
 export type WorkflowNodeProps = NodeProps<Node<WorkflowNodeData>> & {
   type: AppNodeType;
   children?: React.ReactNode;
-};
-
-export type NodeConfig = {
-  id: AppNodeType;
-  title: string;
-  status?: 'loading' | 'success' | 'error' | 'initial';
-  handles: NonNullable<Node['handles']>;
-  icon: keyof typeof iconMapping;
-};
-
-export const NODE_SIZE = { width: 260, height: 50 };
-
-const nodesConfig: Record<AppNodeType, NodeConfig> = {
-  'initial-node': {
-    id: 'initial-node',
-    title: 'Initial Node',
-    status: 'initial',
-    handles: [
-      {
-        type: 'source',
-        position: Position.Bottom,
-        x: NODE_SIZE.width * 0.5,
-        y: NODE_SIZE.height,
-      },
-    ],
-    icon: 'Rocket',
-  },
-  'agent-node': {
-    id: 'agent-node',
-    title: 'Agent Node',
-    status: 'initial',
-    handles: [
-      {
-        type: 'source',
-        position: Position.Bottom,
-        x: NODE_SIZE.width * 0.5,
-        y: NODE_SIZE.height,
-      },
-      {
-        type: 'target',
-        position: Position.Top,
-        x: NODE_SIZE.width * 0.5,
-        y: 0,
-      },
-    ],
-    icon: 'Bot',
-  },
-  'transform-node': {
-    id: 'transform-node',
-    title: 'Transform Node',
-    handles: [
-      {
-        type: 'source',
-        position: Position.Bottom,
-        x: NODE_SIZE.width * 0.5,
-        y: NODE_SIZE.height,
-      },
-      {
-        type: 'target',
-        position: Position.Top,
-        x: NODE_SIZE.width * 0.5,
-        y: 0,
-      },
-    ],
-    icon: 'Spline',
-  },
-  'join-node': {
-    id: 'join-node',
-    title: 'Join Node',
-    status: 'initial',
-    handles: [
-      {
-        id: 'true',
-        type: 'target',
-        position: Position.Top,
-        x: NODE_SIZE.width - 25,
-        y: 0,
-      },
-      {
-        id: 'false',
-        type: 'target',
-        position: Position.Top,
-        x: 25,
-        y: 0,
-      },
-      {
-        type: 'source',
-        position: Position.Bottom,
-        x: NODE_SIZE.width * 0.5,
-        y: NODE_SIZE.height,
-      },
-    ],
-    icon: 'Split',
-  },
-  'branch-node': {
-    id: 'branch-node',
-    title: 'Branch Node',
-    status: 'initial',
-    handles: [
-      {
-        type: 'target',
-        position: Position.Top,
-        x: NODE_SIZE.width * 0.5,
-        y: 0,
-      },
-      {
-        id: 'true',
-        type: 'source',
-        position: Position.Bottom,
-        x: 25,
-        y: NODE_SIZE.height,
-      },
-      {
-        id: 'false',
-        type: 'source',
-        position: Position.Bottom,
-        x: NODE_SIZE.width - 25,
-        y: NODE_SIZE.height,
-      },
-    ],
-    icon: 'Merge',
-  },
-  'output-node': {
-    id: 'output-node',
-    title: 'Output Node',
-    handles: [
-      {
-        type: 'target',
-        position: Position.Top,
-        x: NODE_SIZE.width * 0.5,
-        y: 0,
-      },
-    ],
-    icon: 'CheckCheck',
-  },
 };
 
 export const nodeTypes = {
@@ -215,4 +72,6 @@ export type AppNode =
   | Node<WorkflowNodeData, 'branch-node'>
   | Node<WorkflowNodeData, 'output-node'>;
 
-export default nodesConfig;
+// Re-export from config
+export { AppNodeType, NodeConfig, NODE_SIZE };
+export { default as nodesConfig } from './config';
