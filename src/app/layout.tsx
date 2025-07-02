@@ -37,7 +37,9 @@ export default async function RootLayout({
   return (
     <AppStoreProvider initialState={{ ...defaultState, colorMode: theme }}>
       <html lang="en" className={theme}>
-        <body>{children}</body>
+        <body>
+          <div className="root">{children}</div>
+        </body>
       </html>
     </AppStoreProvider>
   );
